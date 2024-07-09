@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<style>
+    .book-details img {
+        width: 100%;
+    }
+    .review-form {
+        background-color: white;
+        border-radius: 0.25rem;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="bg-gray-900 text-white py-20">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col lg:flex-row items-center">
+            <div class="book-info">
+                <h1 class="text-3xl font-bold mb-4">{{ book.name }}</h1>
+                <p class="text-gray-200 mb-2"><strong>Borrowing Price:</strong> ${{ book.price }}</p>
+                <p class="text-gray-200 mb-4"><strong>Quantity:</strong> {{ book.quantity }}</p>
+                <p class="text-gray-200 mb-6">{{ book.description }}</p>
+                {% if user.account %}
+                <a href="{% url 'buy_book' book.id %}" class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">Borrow Book</a>
+                {% endif %}
+            </div>
+            <div class="book-image px-4">
+                <img src="{{ book.image.url }}" alt="{{ book.name }}" class="w-full h-auto">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mt-8">
+    <div class="container mx-auto bg-white px-6 py-8 rounded-lg shadow-md">
+        <div class="flex flex-wrap">
+            <div class="w-full md:w-1/2 mt-5">
+                <h2 class="text-2xl font-bold mb-3">Reviews</h2>
+                {% for review in reviews %}
+                <div class="review-form">
+                    <p class="font-bold">{{ review.name }} - {{ review.created_on }}</p>
+                    <p>{{ review.body }}</p>
+                </div>
+                {% empty %}
+                <p>No reviews yet.</p>
+                {% endfor %}
+            </div>
+            {% if user_has_purchased %}
+            <div class="w-full md:w-1/2 mt-5">
+                <h3 class="text-2xl font-bold mb-3">Add Review</h3>
+                <form method="post" class="review-form">
+                    {% csrf_token %}
+                    {{ review_form.as_p }}
+                    <br>
+                    <button type="submit" class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button>
+                </form>
+                <br>
+                <br>
+                <br>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

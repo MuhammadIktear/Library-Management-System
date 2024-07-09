@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<style>
+    /* Any additional custom styles */
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+
+<!-- Category Filtering -->
+<section class="py-8 bg-gray-900">
+    <div class="container mx-auto text-center">
+        <h3 class="text-2xl font-semibold text-white mb-6">Categories</h3>
+        <div class="flex justify-center gap-4">
+            {% for category in categories %}
+            <a href="{% url 'category' category.slug %}" 
+               class="text-white hover:text-white hover:bg-gray-700 py-2 px-6 rounded transition duration-300 ease-in-out shadow">
+                {{ category.name }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+<!-- Book Listing -->
+<section class="container mx-auto py-12">
+    <h3 class="bg-gray-800 text-white px-4 py-2 mb-6 inline-block rounded">Total Books Found: <span class="font-semibold">{{ books|length }}</span></h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for book in books %}
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <img src="{{ book.image.url }}" alt="{{ book.name }}" class="w-full h-80 object-cover">
+            <div class="p-4">
+                <h5 class="text-xl font-semibold mb-2">{{ book.name }}</h5>
+                <p class="text-gray-700 mb-2"><strong>Borrowing Price:</strong> ${{ book.price }}</p>
+                <p class="text-gray-700 mb-4"><strong>Quantity:</strong> {{ book.quantity }}</p>
+                <p class="text-gray-700">{{ book.description|truncatewords:20 }}</p>
+                <a href="{% url 'book_details' book.id %}" class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-block mt-2 transition duration-300 ease-in-out">Details</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

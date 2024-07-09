@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head_title %}Banking System{% endblock %}
+
+{% block content %}
+<!-- Display non-field errors -->
+{% if form.non_field_errors %}
+    {% for error in form.non_field_errors %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-2" role="alert">
+            <p class="font-bold">Error!</p>
+            <p class="block sm:inline">{{ error }}</p>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<!-- User Info Section -->
+<div class="container m-auto bg-white px-6 py-8 rounded-lg shadow-md my-6">
+    <section>
+        <p class="text-blue-900 font-bold text-lg mb-2">Hello, {{ request.user.first_name }}</p>
+        <p class="text-blue-900 font-medium mb-2">Account No: {{ request.user.account.account_no }}</p>
+        <p class="text-blue-900 font-medium mb-4">Balance: {{ request.user.account.balance }}$</p>
+        <a href="{% url 'deposit_money' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Deposit
+        </a>
+    </section>
+</div>
+
+<!-- Profile Update Section -->
+<div class="container m-auto bg-white px-6 py-8 rounded-lg shadow-md">
+    <h1 class="font-bold text-2xl text-center mb-6">Update Profile Information</h1>
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+        {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field.errors }}
+            {{ hidden_field }}
+        {% endfor %}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- First Name -->
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.first_name.id_for_label }}">
+                    {{ form.first_name.label }}
+                </label>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}
+                    {% for error in form.first_name.errors %}
+                        <p class="text-red-600 text-sm italic">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <!-- Last Name -->
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.last_name.id_for_label }}">
+                    {{ form.last_name.label }}
+                </label>
+                {{ form.last_name }}
+                {% if form.last_name.errors %}
+                    {% for error in form.last_name.errors %}
+                        <p class="text-red-600 text-sm italic">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.email.id_for_label }}">
+                    {{ form.email.label }}
+                </label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    {% for error in form.email.errors %}
+                        <p class="text-red-600 text-sm italic">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <!-- Password 1 -->
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.password1.id_for_label }}">
+                    {{ form.password1.label }}
+                </label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                    {% for error in form.password1.errors %}
+                        <p class="text-red-600 text-sm italic">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <!-- Password 2 -->
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.password2.id_for_label }}">
+                    {{ form.password2.label }}
+                </label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                    {% for error in form.password2.errors %}
+                        <p class="text-red-600 text-sm italic">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+            Update
+        </button>
+    </form>
+</div>
+
+<!-- Purchased Books Section -->
+<div class="container m-auto bg-white px-6 py-8 rounded-lg shadow-md mt-6">
+    <h2 class="text-xl font-bold mb-4">Purchased Books: {{ orders|length }}</h2>
+    
+    <!-- Table structure -->
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border-gray-200 shadow-md rounded-lg overflow-hidden">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book ID</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categories</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Borrow Date</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Return</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ order.book.id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ order.book.name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${{ order.book.price }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ order.book.category }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ order.order_date }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="{% url 'return_book' order.book.id %}" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg">
+                                Return
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-4 text-center">You have not purchased any books yet.</td>
+                    </tr>
+                {% endfor %}
+                <!-- Balance After Transaction Row -->
+                <tr class="bg-gray-100">
+                    <td colspan="6" class="px-6 py-4 text-right font-bold">Balance after transaction: ${{ request.user.account.balance }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
