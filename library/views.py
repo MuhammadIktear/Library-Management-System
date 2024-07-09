@@ -22,7 +22,7 @@ def buy_book(request, pk):
             Order.objects.create(user=request.user, book=book, quantity=1)
             
             messages.success(request, f'You have successfully borrowed {book.name}!')
-            send_transaction_email(request.user, book.price, "Deposit Message", "borrow_email.html")
+            send_transaction_email(request.user, book.price, "Message", "borrow_email.html")
         else:
             messages.error(request, 'Insufficient balance to borrow this book.')
     else:
@@ -46,7 +46,7 @@ def return_book(request, pk):
         order.delete()
         
         messages.success(request, f'You have successfully returned {book.name}!')
-        send_transaction_email(request.user, book.price, "Deposit Message", "returnMoney_email.html")
+        send_transaction_email(request.user, book.price, "Message", "returnMoney_email.html")
     else:
         messages.error(request, 'No record of borrowing this book.')
     

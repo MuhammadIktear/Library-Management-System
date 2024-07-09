@@ -7,8 +7,8 @@ class DepositForm(forms.ModelForm):
         fields = ['amount']
 
     def __init__(self, *args, **kwargs):
-        self.account = kwargs.pop('account', None)  # Ensure account is properly initialized
-        super().__init__(*args, **kwargs)  # Call the parent constructor
+        self.account = kwargs.pop('account', None) 
+        super().__init__(*args, **kwargs) 
 
     def clean_amount(self):
         min_deposit_amount = 100
