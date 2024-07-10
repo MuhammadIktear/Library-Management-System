@@ -9,7 +9,9 @@
                 <h1 class="text-4xl font-bold mb-4">Welcome to the Book Library</h1>
                 <p class="text-lg">Discover a wide range of books that cater to every interest and passion. Find your next favorite book with ease.</p>
                 <br>
+                {% if request.user.is_authenticated %}
                 <a href="{% url 'books' %}"class="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">See Books</a>
+                {%endif%}
             </div>
             <div class="lg:w-1/2 mt-10 lg:mt-0">
                 <img src="/static/library.jpg" alt="Library image" class="mx-5 rounded-lg shadow-lg">
