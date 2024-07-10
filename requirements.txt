@@ -1,13 +1,18 @@
 asgiref
 crispy-bootstrap5
 distlib
+dj-database-url
 Django
 django-crispy-forms
 django-environ
 filelock
+gunicorn
 MouseInfo
+packaging
 pillow
 platformdirs
+psycopg2
+psycopg2-binary
 PyAutoGUI
 PyGetWindow
 PyMsgBox
@@ -16,6 +21,7 @@ PyRect
 PyScreeze
 pytweening
 sqlparse
+typing_extensions
 tzdata
 virtualenv
 virtualenvwrapper-win
