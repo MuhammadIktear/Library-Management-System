@@ -58,12 +58,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'library_management_system.wsgi.application'
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # DATABASES = {
 #     'default': {
@@ -77,12 +77,12 @@ WSGI_APPLICATION = 'library_management_system.wsgi.application'
 # }
 # Database documentation https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='postgresql://lms_l4f1_user:ZQ0KnyqsID4CkCjbXvVApMOTUj6Qj3mP@dpg-cq77bf08fa8c73869ltg-a.oregon-postgres.render.com/lms_l4f1',
-    )
-}    
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         # Replace this value with your local database's connection string.
+#         default='postgresql://lms_l4f1_user:ZQ0KnyqsID4CkCjbXvVApMOTUj6Qj3mP@dpg-cq77bf08fa8c73869ltg-a.oregon-postgres.render.com/lms_l4f1',
+#     )
+# }    
 
 AUTH_PASSWORD_VALIDATORS = [
     {
