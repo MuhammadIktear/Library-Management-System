@@ -11,7 +11,7 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ['https://library-management-system-47jj.onrender.com/', 'https://*.127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://library-management-system-4-9l8r.onrender.com/', 'https://*.127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
